@@ -26,15 +26,23 @@ async function pastas() {
     }
 }
 async function expressStart(ep){
-    return new Promise((resolve, reject)=>{
-        axios.post('http://localhost:3300/video', {file: ep}, {headers: {
+    let fun = await axios.post('http://localhost:3300/video', {file: ep}, {headers:{
             "Content-Type": "multipart/form-data"
-          }}).then(params =>{
+        }}).then(params =>{
+            console.log(params)
+        }).catch(errou =>{
+            console.log(errou)
+        })
+    return fun
+    /* return new Promise((resolve, reject)=>{
+        axios.post('http://localhost:3300/video', {file: ep}, {headers:{
+            "Content-Type": "multipart/form-data"
+        }}).then(params =>{
             resolve(params)
         }).catch(errou =>{
             reject(errou)
         })
-    })
+    }) */
 }
 async function StartUploads() {
     let episodio = await pastas()
