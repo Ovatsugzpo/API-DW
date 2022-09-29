@@ -15,6 +15,15 @@
 <script>
     let file = document.querySelector('.file')
     file.addEventListener('change', (e)=>{
+        let data = new FormData()
+        data.append('file', e.target.files)
+        console.log(e.target.files[0])
+        let datas = data.keys()
+        console.log(datas)
+        datas.map(e=>{
+            console.log(e)
+        })
+
         
     })
 </script>

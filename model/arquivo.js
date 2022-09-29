@@ -17,6 +17,8 @@ async function pastas() {
         pastas.forEach(async arquivo => {
             let caminho = path.resolve('/', 'DW-Temps', 'doctor.who.S01')
             let ep = fs2.createReadStream(`${caminho}/${arquivo}`)  
+            let dadosEstaticos = fs2.statSync(`${caminho}/${arquivo}`)
+            console.log(dadosEstaticos)
             return ep
         })
     }catch(err){
@@ -34,7 +36,6 @@ async function expressStart(ep){
         })
     })
 }
-let formdata 
 async function StartUploads() {
     let episodio = await pastas()
     await expressStart(episodio)
