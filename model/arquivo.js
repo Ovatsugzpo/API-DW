@@ -12,10 +12,10 @@ async function arquivo (){
     }
 }
 async function Pastas() {
-    try{
+    /*try{*/
         /* let pastas = await fs.readdir(path.join('/', 'DW-Temps', 'doctor.who.S01')) */
-        let pastas =  await fs.readdir('C:/Users/paulo/OneDrive/Documents/gusta/')
-        pastas.forEach(async arquivo => {
+        /*let pastas =  await fs.readdir('C:/Users/paulo/OneDrive/Documents/gusta/')*/
+        /* pastas.forEach(async arquivo => {
             let caminho = 'C:/Users/paulo/OneDrive/Documents/gusta/'
             let ep = fs2.createReadStream(`${caminho}${arquivo}`) 
             let dadosEstaticos = fs2.statSync(`${caminho}/${arquivo}`)
@@ -32,14 +32,35 @@ async function Pastas() {
     }catch(err){
         console.log('deu erro aq boy', err)
         throw err
+    } */
+    try {
+        let caminho = 'C:/Users/paulo/OneDrive/Documents/gusta/'
+        let arquivo = await fs.readdir(caminho)
+        let ep = fs2.createReadStream(`${caminho}${arquivo}`)
+        let dadosEstaticos = fs2.statSync(`${caminho}${arquivo}`)
+        let obj = {
+            ep: ep,
+            dadosEstaticos: dadosEstaticos
+        }
+        return obj
     }
+    catch(err) {
+        throw err
+    }
+    
+
 }
 async function expressStart(ep){
-    console.log(ep)
     return new Promise((resolve, reject)=>{
-        axios.post('http://localhost:3300/video', {file: ep.dadosEstaticos}, {headers: {
-            "Content-Type": "multipart/form-data"
-          }}).then(params =>{
+        axios({ method: 'post', 
+        url: 'http://localhost:3300/video', 
+        data: {file:ep.ep},
+        headers: {"content-type": "multipart/form-data"},
+        maxContentLength: 100000000,
+        maxBodyLength: 1000000000
+        })
+        .then(params =>{
+            console.log('foi lol')
             resolve(params)
         }).catch(errou =>{
             reject(errou)
@@ -49,7 +70,6 @@ async function expressStart(ep){
 async function StartUploads() {
     try {
         let episodio = await Pastas()
-        console.log(episodio,'ep')
         await expressStart(episodio)
 
     }
