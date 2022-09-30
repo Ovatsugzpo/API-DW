@@ -27,6 +27,7 @@ module.exports = {
         }
     }),
     filename: (req, file, cb)=>{
+        console.log('oiiii')
         crypto.randomBytes(10, (err, hash)=>{
             if (err){
                 cb(err)
