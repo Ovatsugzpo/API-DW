@@ -78,23 +78,3 @@ async function StartUploads() {
     }
 }
 StartUploads()
-
-/*  
-    fieldname: 'file',
-    originalname: 'Gravar_2022_08_28_22_10_32_39.mp4',
-    encoding: '7bit',
-    mimetype: 'video/mp4',
-    size: 2147231,
-    bucket: 'amigitos-espanol-doctor-who',
-    key: 'Gravar_2022_08_28_22_10_32_39-a68415fe3026784ea11c.mp4',
-    acl: 'public-read',
-    contentType: 'video/mp4',
-    contentDisposition: null,
-    contentEncoding: null,
-    storageClass: 'STANDARD',
-    serverSideEncryption: null,
-    metadata: undefined,
-    location: 'https://amigitos-espanol-doctor-who.s3.sa-east-1.amazonaws.com/Gravar_2022_08_28_22_10_32_39-a68415fe3026784ea11c.mp4',
-    etag: '"a126cc466ae5eac0fc6c54bbad530cba"',
-    versionId: undefined 
-*/
