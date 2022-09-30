@@ -13,7 +13,7 @@ async function arquivo (){
 }
 async function Pastas() {
     try{
-        /* let pastas = await fs.readdir(path.join('/', 'DW-Temps', 'doctor.who.S01')) */
+        /* let pastas = await fs.readdir(path.join('/', 'DW-Temps', 'doctor.who.S01'))*/
         let pastas =  await fs.readdir('C:/Users/paulo/OneDrive/Documents/gusta/')
         pastas.forEach(async arquivo => {
             let caminho = 'C:/Users/paulo/OneDrive/Documents/gusta/'
