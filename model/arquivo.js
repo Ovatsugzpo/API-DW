@@ -11,42 +11,75 @@ async function arquivo (){
         throw err
     }
 }
-async function pastas() {
-    try{
-        let pastas = await fs.readdir(path.join('/', 'DW-Temps', 'doctor.who.S01'))
-        pastas.forEach(async arquivo => {
-            let caminho = path.resolve('/', 'DW-Temps', 'doctor.who.S01')
-            let ep = fs2.createReadStream(`${caminho}/${arquivo}`)  
+async function Pastas() {
+    /*try{*/
+        /* let pastas = await fs.readdir(path.join('/', 'DW-Temps', 'doctor.who.S01')) */
+        /*let pastas =  await fs.readdir('C:/Users/paulo/OneDrive/Documents/gusta/')*/
+        /* pastas.forEach(async arquivo => {
+            let caminho = 'C:/Users/paulo/OneDrive/Documents/gusta/'
+            let ep = fs2.createReadStream(`${caminho}${arquivo}`) 
             let dadosEstaticos = fs2.statSync(`${caminho}/${arquivo}`)
-            console.log(dadosEstaticos)
-            return ep
+            let obj = {
+                ep: ep,
+                dadosEstaticos: dadosEstaticos
+            }
+            console.log('O OBJETO', obj)
+            return new Promise((resolve, reject) => {
+                resolve(obj)
+                
+            })
         })
     }catch(err){
+        console.log('deu erro aq boy', err)
+        throw err
+    } */
+    try {
+        let caminho = 'C:/Users/paulo/OneDrive/Documents/gusta/'
+        let arquivo = await fs.readdir(caminho)
+        let ep = fs2.createReadStream(`${caminho}${arquivo}`)
+        let dadosEstaticos = fs2.statSync(`${caminho}${arquivo}`)
+        let obj = {
+            ep: ep,
+            dadosEstaticos: dadosEstaticos
+        }
+        return obj
+    }
+    catch(err) {
         throw err
     }
+    
+
 }
 async function expressStart(ep){
-    let fun = await axios.post('http://localhost:3300/video', {file: ep}, {headers:{
-            "Content-Type": "multipart/form-data"
-        }}).then(params =>{
-            console.log(params)
-        }).catch(errou =>{
-            console.log(errou)
-        })
-    return fun
-    /* return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
         axios.post('http://localhost:3300/video', {file: ep}, {headers:{
             "Content-Type": "multipart/form-data"
         }}).then(params =>{
+    return new Promise((resolve, reject)=>{
+        axios({ method: 'post', 
+        url: 'http://localhost:3300/video', 
+        data: {file:ep.ep},
+        headers: {"content-type": "multipart/form-data"},
+        maxContentLength: 100000000,
+        maxBodyLength: 1000000000
+        })
+        .then(params =>{
+            console.log('foi lol')
             resolve(params)
         }).catch(errou =>{
             reject(errou)
         })
-    }) */
+    })
 }
 async function StartUploads() {
-    let episodio = await pastas()
-    await expressStart(episodio)
+    try {
+        let episodio = await Pastas()
+        await expressStart(episodio)
+
+    }
+    catch(error){
+        console.log(error)
+    }
 }
 StartUploads()
 
