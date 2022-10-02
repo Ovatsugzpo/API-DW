@@ -13,10 +13,10 @@ async function arquivo (){
 }
 async function Pastas() {
     try {
-        let caminho = 'D:/DW-Temps'
+        let caminho = 'D:/DW-Temps/doctor.who.S01'
         let arquivo = await fs.readdir(caminho)
-        let ep = fs2.createReadStream(`${caminho}${arquivo}`)
-        let dadosEstaticos = fs2.statSync(`${caminho}${arquivo}`)
+        let ep = fs2.createReadStream(`${caminho}/${arquivo}`)
+        let dadosEstaticos = fs2.statSync(`${caminho}/${arquivo}`)
         let obj = {
             ep: ep,
             dadosEstaticos: dadosEstaticos
