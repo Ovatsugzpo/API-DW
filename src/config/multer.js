@@ -8,27 +8,26 @@ module.exports = {
     dest: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
     storage: multerS3({
         s3: new aws.S3(),
-        bucket: 'amigitos-espanol-doctor-who',
+        bucket: 'amigitos-espanol-doctor-who',  
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         key: (req, file, cb)=>{
-            crypto.randomBytes(10, (err, hash)=>{
+            crypto.randomBytes(4, (err, hash)=>{
                 if (err){
                     cb(err)
                 }
                 let nome = file.originalname.split('.')
-                let nome1 = nome[0]
-                let nome2 = nome[1]
+                let nome2 = nome.at(-1)
 
                 
-                const fileName = `${nome1}-${hash.toString('hex')}.${nome2}`
+                const fileName = `DoctorWho_#${hash.toString('hex')}.${nome2}`
+                file.originalname = fileName    
                 cb(null, fileName)
             })
         }
     }),
     filename: (req, file, cb)=>{
-        console.log('oiiii')
-        crypto.randomBytes(10, (err, hash)=>{
+        crypto.randomBytes(4, (err, hash)=>{
             if (err){
                 cb(err)
             }
@@ -46,10 +45,11 @@ module.exports = {
     },
     fileFilter: (req, file, cb)=>{ 
         const allowedMimes = [
-            'video/mp4',
-            'video/m4a',
-            'video/avi',
-            'video/mkv'
+            'video/mp4', 'video/MP4',
+            'video/m4a', 'video/M4A',
+            'video/avi', 'video/AVI',
+            'video/mkv', 'video/MKV',
+            'multipart/form-data'
         ]
         if (allowedMimes.includes(file.mimetype)){
             cb(null, true)
