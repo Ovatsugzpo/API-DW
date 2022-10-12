@@ -49,7 +49,7 @@ module.exports = {
             'video/m4a', 'video/M4A',
             'video/avi', 'video/AVI',
             'video/mkv', 'video/MKV',
-            'multipart/form-data'
+            'application/octet-stream'
         ]
         if (allowedMimes.includes(file.mimetype)){
             cb(null, true)
