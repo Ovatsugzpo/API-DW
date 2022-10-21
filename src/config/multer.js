@@ -20,8 +20,7 @@ module.exports = {
                 let nome2 = nome.at(-1)
 
                 
-                const fileName = `DoctorWho_#${hash.toString('hex')}.${nome2}`
-                file.originalname = fileName    
+                const fileName = `DoctorWho_#${hash.toString('hex')}.${nome2}`   
                 cb(null, fileName)
             })
         }
@@ -46,10 +45,10 @@ module.exports = {
     fileFilter: (req, file, cb)=>{ 
         const allowedMimes = [
             'video/mp4', 'video/MP4',
-            'video/m4a', 'video/M4A',
-            'video/avi', 'video/AVI',
+            'video/m4a', 'video/webm',
+            'video/x-msvideo', 'video/mpeg',
             'video/mkv', 'video/MKV',
-            'application/octet-stream'
+            'application/octet-stream', 'application/octet-stream'
         ]
         if (allowedMimes.includes(file.mimetype)){
             cb(null, true)
