@@ -1,8 +1,6 @@
 const axios = require('axios')
 const fs = require('fs/promises')
 const fs2 = require('fs')
-const path = require('path')
-const knex = require('./database/knex')
 const OrdemEps = require('./OrdenarEps')
 const OrdemTemp = require('./OrdenarTemps')
 async function arquivo (){
@@ -14,10 +12,36 @@ async function arquivo (){
     }
 }
 async function renameEp(path, temp, ep, extensao) {
-    let nome = `DoctorWho_T${temp}-Ep${ep}${extensao}`
+    let nome = `DoctorWho_T${temp}-Ep${ep}.${extensao}`
     await fs.rename(path, `D:/DW-Temps/doctor.who.S${temp}/${nome}`, (err)=>{
         if(err){throw err}
     })
+}
+async function getExtension (arquivo){
+    try {
+        let extensoes = []
+        let listaEp = []
+        arquivo.forEach(async (x, index) => {
+            listaEp.push(x)
+            let extensao = await OrdemEps.pegarExtensao(listaEp[index])
+            extensoes.push(extensao[index])
+        })
+        return extensoes
+    } catch (err) {
+        throw err
+    }
+}
+async function criarArquivosOrdenados(nums, extensoes) {
+    try {
+        let arquivo2list = []
+        for (let i = 0; i < extensoes.length; i++) {
+            let arquivo2 = await OrdemEps.ProprioSort(nums, extensoes[i])
+            arquivo2list.push(arquivo2[i])
+        }
+        return arquivo2list
+    } catch (err) {
+        throw err
+    }
 }
 async function Renomear() {
     try {
@@ -27,13 +51,13 @@ async function Renomear() {
         for (let T = 0; T < temps.length; T++) {
             let caminho = `D:/DW-Temps/doctor.who.S${T+1}`
             let arquivo = await fs.readdir(caminho)
-            console.log(arquivo)
             let nums = await OrdemEps.pegarNumDoNome(arquivo)
-            let arquivo2 = await OrdemEps.ProprioSort(nums) 
+            let extensoes = await getExtension(arquivo)
+            let arquivo2 = await criarArquivosOrdenados(nums, extensoes)
             for (let E = 0; E < arquivo2.length; E++) {
                 let path = `${caminho}/${arquivo2[E]}`
-                let extensao = OrdemEps.pegarExtensao(arquivo2[E])
-                await renameEp(path, T+1, E+1, extensao)
+                console.log(path)
+                //await renameEp(path, T+1, E+1, extensoes[0])
             }
         }
     } catch (err) {

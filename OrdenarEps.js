@@ -11,16 +11,16 @@ class OrdenarEps{
     }
     async pegarExtensao(array){
         let extensaoLista = []
-        array.forEach(a=>{
-            let extensao = a.split(')')[1]
+        for (let i = 0; i <= array.length; i++) {
+            let extensao = array.split('.')[1]
             extensaoLista.push(extensao)
-        })
+        }
         return extensaoLista
     }
-    async ProprioSort(nums) {
+    async ProprioSort(nums, extensao) {
         nums.sort((x,y)=>{return x - y})
         let arrayClone = []
-        nums.forEach(ep => {arrayClone.push(`DoctorWho (${ep}).mp4`)})
+        nums.forEach(ep => {arrayClone.push(`DoctorWho (${ep}).${extensao}`)})
         return arrayClone
     }
 }
