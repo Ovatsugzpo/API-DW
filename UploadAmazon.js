@@ -43,12 +43,24 @@ async function criarArquivosOrdenados(nums, extensoes) {
         throw err
     }
 }
+async function OrdenarEps(EpTemp, extensoes) {
+    try {
+        let arquivo2list = []
+        for (let i = 0; i < extensoes.length; i++) {
+            let arquivo2 = await OrdemEps.ProprioSort2(EpTemp, extensoes[i])
+            arquivo2list.push(arquivo2[i])
+        }
+        return arquivo2list
+    } catch (err) {
+        throw err
+    }
+}
 async function Renomear() {
     try {
         let temp = await fs.readdir('D:/DW-Temps')
         let nuum2 = await OrdemTemp.pegarNumDoNome(temp)
         let temps = await OrdemTemp.ProprioSort(nuum2)
-        for (let T = 0; T < temps.length; T++) {
+        for (let T = 0; T < temps.length; T++) { 
             let caminho = `D:/DW-Temps/doctor.who.S${T+1}`
             let arquivo = await fs.readdir(caminho)
             let nums = await OrdemEps.pegarNumDoNome(arquivo)
@@ -56,8 +68,7 @@ async function Renomear() {
             let arquivo2 = await criarArquivosOrdenados(nums, extensoes)
             for (let E = 0; E < arquivo2.length; E++) {
                 let path = `${caminho}/${arquivo2[E]}`
-                console.log(path)
-                //await renameEp(path, T+1, E+1, extensoes[0])
+                await renameEp(path, T+1, E+1, extensoes[E])
             }
         }
     } catch (err) {
@@ -66,21 +77,26 @@ async function Renomear() {
 }
 async function Pastas() {
     try {
-        let temp = await fs.readdir('D:/DW-Temps')
+        let tempp = await fs.readdir('D:/DW-Temps')
+        let num = await OrdemTemp.pegarNumDoNome(tempp)
+        let temp = await OrdemTemp.ProprioSort(num)
         let listEp = []
-        for (let i = 1; i <= temp.length; i++) {
+        for (let i = 1; i <= temp.length; i++) {//o I é a temp
             try {
                 let caminho = `D:/DW-Temps/doctor.who.S${i}`
-                let arquivo = await fs.readdir(caminho)
-                let nums = await Ordem.pegarNumDoNome(arquivo)
-                let arquivo2 = await Ordem.ProprioSort(nums) 
-                for (let j = 0; j < arquivo2.length; j++) {
+                let arquivo = await fs.readdir(caminho) 
+                let numEp = await OrdemEps.pegarEp(arquivo)
+                let extensoes = await getExtension(arquivo)
+                let arquivo2 = await OrdenarEps(numEp, extensoes)
+                for (let j = 0; j < arquivo2.length; j++) { // J é o ep 
                     let path = `${caminho}/${arquivo2[j]}`
                     let CreatedMedia = fs2.createReadStream(path)
                     let dadosEstaticos = fs2.statSync(path)
                     let obj = {
                         CreatedMedia,
                         dadosEstaticos,
+                        temp: i,
+                        ep: j +1
                     }
                     listEp.push(obj)
                 }
@@ -94,11 +110,15 @@ async function Pastas() {
         throw err
     } 
 }
-async function expressStart(ep){
+async function expressStart(Episode){
     return new Promise((resolve, reject)=>{
         axios({ method: 'post', 
-        url: 'http://localhost:3300/video',
-        data: {file: ep.CreatedMedia},
+        url: 'http://localhost:3300/video', 
+        data: {
+            file: Episode.CreatedMedia,
+            ep:Episode.ep,
+            temp: Episode.temp,
+        },
         headers: {"content-type": "multipart/form-data"},
         maxContentLength: 100000000, 
         maxBodyLength: 1000000000
@@ -122,4 +142,4 @@ async function StartUploads() {
         console.log(error)
     }
 }
-Renomear()
+StartUploads()

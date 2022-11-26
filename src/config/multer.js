@@ -19,7 +19,6 @@ module.exports = {
                 let nome = file.originalname.split('.')
                 let nome2 = nome.at(-1)
 
-                
                 const fileName = `DoctorWho_#${hash.toString('hex')}.${nome2}`   
                 cb(null, fileName)
             })
@@ -32,8 +31,7 @@ module.exports = {
             }
             let nome = file.originalname.split('.')
             let nome1 = nome[0]
-            let nome2 = nome[1]
-
+            let nome2 = nome[1] //tu da la em cima é ?
             
             file.key = `${nome1}-${hash.toString('hex')}.${nome2}`
             cb(null, file.key)
@@ -47,8 +45,7 @@ module.exports = {
             'video/mp4', 'video/MP4',
             'video/m4a', 'video/webm',
             'video/x-msvideo', 'video/mpeg',
-            'video/mkv', 'video/MKV',
-            'application/octet-stream', 'application/octet-stream'
+            'video/mkv', 'video/MKV'
         ]
         if (allowedMimes.includes(file.mimetype)){
             cb(null, true)

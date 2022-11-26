@@ -1,9 +1,9 @@
 const knex = require('../database/knex')
 class post {
     async PostVideo(data){
-        let {name, url, key, Ep, Temp} = data
+        let {nome, url, key, ep, temp} = data
         try{
-            let video = await knex.insert({nome:name, url, key, ep:Ep, temp: Temp}).into('post')
+            let video = await knex.insert({nome, url, key, ep, temp}).into('post')
             return video
         }catch(err){
             throw err
