@@ -3,6 +3,8 @@ const fs = require('fs/promises')
 const fs2 = require('fs')
 const OrdemEps = require('./OrdenarEps')
 const OrdemTemp = require('./OrdenarTemps')
+const Convertion = require('./Convertion')
+
 async function arquivo (){
     try{
         let duto = await axios.get('http://localhost:3300/video')
@@ -90,8 +92,22 @@ async function Pastas() {
                 let arquivo2 = await OrdenarEps(numEp, extensoes)
                 for (let j = 0; j < arquivo2.length; j++) { // J é o ep 
                     let path = `${caminho}/${arquivo2[j]}`
-                    let CreatedMedia = fs2.createReadStream(path)
-                    let dadosEstaticos = fs2.statSync(path)
+                    let CreatedMedia
+                    let dadosEstaticos
+                    if (extensoes[j] != 'mp4') {
+                        try {
+                            console.log('convertendo...')
+                            let newPath_mp4 = await Convertion(path)
+                            CreatedMedia = fs2.createReadStream(newPath_mp4)
+                            dadosEstaticos = fs2.statSync(newPath_mp4)
+                        } catch (err) {
+                            throw err
+                        }
+                    }else{
+                        console.log('pulou')
+                        CreatedMedia = fs2.createReadStream(path)
+                        dadosEstaticos = fs2.statSync(path)
+                    }
                     let obj = {
                         CreatedMedia,
                         dadosEstaticos,
@@ -113,7 +129,7 @@ async function Pastas() {
 async function expressStart(Episode){
     return new Promise((resolve, reject)=>{
         axios({ method: 'post', 
-        url: 'http://localhost:3300/video', 
+        url: 'http://localhost:3300/episode', 
         data: {
             file: Episode.CreatedMedia,
             ep:Episode.ep,

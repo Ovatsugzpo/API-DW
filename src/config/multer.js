@@ -8,7 +8,7 @@ module.exports = {
     dest: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
     storage: multerS3({
         s3: new aws.S3(),
-        bucket: 'amigitos-espanol-doctor-who',  
+        bucket: 'doctorwhoapi',  
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         key: (req, file, cb)=>{

@@ -21,7 +21,6 @@ class epsController{
             }
             for (let y = 0; y < data.length; y++) {
                 let temp = data[y].temp
-                if(y < data.length -1){proxTtemp = data[y+1].temp}
                 let tp = 0
                 while (tp < Dw.length){
                     if (temp-1 == tp) {
