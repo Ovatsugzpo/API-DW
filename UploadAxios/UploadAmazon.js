@@ -1,8 +1,8 @@
 const axios = require('axios')
 const fs = require('fs/promises')
 const fs2 = require('fs')
-const OrdemEps = require('./OrdenarEps')
-const OrdemTemp = require('./OrdenarTemps')
+const OrdemEps = require('./Order/OrdenarEps')
+const OrdemTemp = require('./Order/OrdenarTemps')
 const Convertion = require('./Convertion')
 
 async function arquivo (){
